@@ -258,7 +258,7 @@ void Nachos_Read(){							//system call 6
    	}
    	
 	machine->WriteRegister(2, bytesRead);
-	printf("termina read");
+	printf("termina read\n");
 	returnFromSystemCall();
 }
 
@@ -272,11 +272,9 @@ void Nachos_Write() {                   		// System call 7
 */
 	int bufDir = machine->ReadRegister(4);        
     int size = machine->ReadRegister(5);	// Read size to write
-
-        // buffer = Read data from address given by user;
    	int id = machine->ReadRegister( 6 );	// Read file descriptor
 	char * buffer = new char[size];
-	
+	printf("ID donde escribir: %d\n", id);
 	//leer input 
 	int num;
 	for(int i =0; i<size; ++i){	
@@ -284,7 +282,6 @@ void Nachos_Write() {                   		// System call 7
 		buffer[i] = num;
 	}
 	
-
 	// Need a semaphore to synchronize access to console
 	consoleSem->P();
 	switch (id) {
@@ -388,11 +385,12 @@ void Nachos_Yield(){	//System call 10
 }
 
 
-void Nachos_SemCreate(){	//System call 11
+void Nachos_SemCreate(){			//System call 11
 	int ini = machine->ReadRegister(4);
 	int ret = semTable->CreateSemaphore(ini);
-	printf("Crea semaforo\n");
+	printf("Crea semaforo %d\n", ret);
 	machine->WriteRegister(2, ret);
+	returnFromSystemCall();
 }
 
 
@@ -401,6 +399,7 @@ void Nachos_SemDestroy(){		//System call 12
 	int ret = semTable->DelSemaphore(semId);
 	printf("Destruye semaforo\n");
 	machine->WriteRegister(2, ret);
+	returnFromSystemCall();
 }
 
 
@@ -409,6 +408,7 @@ void Nachos_SemSignal(){		//System call 13
 	int ret = semTable->signalSem(ini);
 	printf("Signal\n");
 	machine->WriteRegister(2, ret);
+	returnFromSystemCall();
 }
 
 
@@ -418,6 +418,7 @@ void Nachos_SemWait(){		//System call 14
 	int ret = semTable->waitSem(ini);
 	printf("Wait\n");
 	machine->WriteRegister(2, ret);
+	returnFromSystemCall();
 }
 
 //----------------------------------------------------------------------

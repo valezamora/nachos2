@@ -13,7 +13,7 @@ NachosSemaphoresTable::~NachosSemaphoresTable(){
 // Register the file handle
 int NachosSemaphoresTable::CreateSemaphore(int value){
 	int posicion = activeSemaphoresMap->Find();
-	semaphores[posicion] = new Semaphore((char*)posicion, value);
+	semaphores[posicion] = new Semaphore("sem", value);
 	return posicion;
 }
 
