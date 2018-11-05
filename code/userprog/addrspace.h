@@ -33,10 +33,15 @@ class AddrSpace {
 
     void SaveState();			// Save/restore address space-specific
     void RestoreState();		// info on a context switch 
+	
+	void addCopy();
+	void delCopy();
+	int getCopies();
 
   private:
     TranslationEntry *pageTable;	
     unsigned int numPages;		// Number of pages in the virtual address space
+    int copy;
 };
 
-#endif // ADDRSPACE_H
+#endif // ADDRSPACE_H	

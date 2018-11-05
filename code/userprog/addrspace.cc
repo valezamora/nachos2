@@ -61,7 +61,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
 {
     NoffHeader noffH;
     unsigned int i, size;
-
+	
     executable->ReadAt((char *)&noffH, sizeof(noffH), 0);
     if ((noffH.noffMagic != NOFFMAGIC) && 
 		(WordToHost(noffH.noffMagic) == NOFFMAGIC))
@@ -126,6 +126,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
     	this->AnularPagina(k);
     }
 */
+	copy = 0;
 			
 }
 
@@ -150,7 +151,8 @@ AddrSpace::AddrSpace(AddrSpace* otro){
 						// a separate page, we could set its 
 					// pages to be read-only
     }
-    
+    this->copy++;
+    otro->addCopy();
 }
 
 //----------------------------------------------------------------------
@@ -228,4 +230,17 @@ void AddrSpace::RestoreState()
 {
     machine->pageTable = pageTable;
     machine->pageTableSize = numPages;
+}
+
+void AddrSpace::addCopy(){
+	copy++;
+}
+
+
+void AddrSpace::delCopy(){
+	copy--;
+}
+
+int AddrSpace::getCopies(){
+	return copy;
 }
